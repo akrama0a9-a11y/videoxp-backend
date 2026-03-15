@@ -14,8 +14,9 @@ app.add_middleware(
 @app.get("/transcript/{video_id}")
 def get_transcript(video_id: str):
     try:
-        transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=['ar','fr','en'])
-        full_text = " ".join([t['text'] for t in transcript])
+        ytt = YouTubeTranscriptApi()
+        transcript = ytt.fetch(video_id)
+        full_text = " ".join([t.text for t in transcript])
         return {"success": True, "transcript": full_text}
     except Exception as e:
         return {"success": False, "error": str(e)}
